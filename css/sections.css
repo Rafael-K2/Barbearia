@@ -1,0 +1,472 @@
+/* ==========================================================================
+   sections.css — estilos por seção + animação de entrada ao rolar
+   ========================================================================== */
+
+/* ---------- Animação de entrada ao rolar ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      translate: 0 1.75rem;
+    }
+  }
+
+  /* Nativo: scroll-driven animation (sem JS) */
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    .reveal {
+      animation: reveal auto linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+
+  /* Fallback: o JS adiciona .reveal-pending e depois .is-visible */
+  .reveal-pending {
+    opacity: 0;
+    translate: 0 1.75rem;
+    transition:
+      opacity 0.7s var(--ease),
+      translate 0.7s var(--ease);
+  }
+  .reveal-pending.is-visible {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---------- 2. Hero ---------- */
+.hero {
+  position: relative;
+  display: grid;
+  align-content: end;
+  min-block-size: 100svh;
+  padding-block: calc(var(--header-height) + var(--space-7)) var(--space-9);
+  overflow: clip;
+  isolation: isolate;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, var(--color-bg) 4%, rgb(13 13 13 / 0.55) 55%, rgb(13 13 13 / 0.78));
+}
+
+.hero-content {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+}
+.hero-content::before {
+  content: "";
+  inline-size: 4rem;
+  block-size: 2px;
+  background: var(--color-gold);
+}
+
+.hero h1 {
+  max-inline-size: 13ch;
+  color: var(--color-white);
+}
+
+.hero-lead {
+  max-inline-size: 40ch;
+  font-size: var(--step-1);
+  color: var(--color-text);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block-start: var(--space-3);
+}
+
+/* Único momento orquestrado na abertura da página */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+  }
+  .hero h1 {
+    animation: hero-in 0.9s var(--ease) both;
+  }
+  .hero-lead {
+    animation: hero-in 0.9s var(--ease) 0.15s both;
+  }
+  .hero-actions {
+    animation: hero-in 0.9s var(--ease) 0.3s both;
+  }
+}
+
+/* ---------- 3. Sobre ---------- */
+.about-grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.about-figure {
+  position: relative;
+  isolation: isolate;
+}
+.about-figure img {
+  inline-size: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid var(--color-line);
+  filter: grayscale(1);
+}
+.about-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0.6rem -0.6rem -0.6rem 0.6rem;
+  z-index: -1;
+  border: 1px solid var(--color-gold);
+  opacity: 0.6;
+}
+
+.about-body .section-head {
+  margin-block-end: var(--space-5);
+}
+.about-body p {
+  margin-block-end: var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--color-line);
+}
+.stats div {
+  display: flex;
+  flex-direction: column-reverse; /* número acima do rótulo, mantendo dt antes de dd no DOM */
+  gap: var(--space-1);
+}
+.stats dd {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-gold);
+}
+.stats dt {
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+
+/* ---------- 4. Serviços e preços ---------- */
+.services {
+  background: var(--color-surface);
+}
+
+.service-list {
+  max-inline-size: 52rem;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.service {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "info price"
+    "action action";
+  align-items: center;
+  gap: var(--space-4) var(--space-5);
+  padding-block: var(--space-5);
+  border-block-end: 1px solid var(--color-line);
+}
+.service-info {
+  grid-area: info;
+}
+.service-info h3 {
+  color: var(--color-white);
+}
+.service-info p {
+  margin-block-start: var(--space-1);
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+.price {
+  grid-area: price;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--color-gold);
+  white-space: nowrap;
+}
+.service .btn {
+  grid-area: action;
+  justify-self: start;
+}
+
+/* ---------- 5. Galeria ---------- */
+.gallery-grid {
+  columns: 2;
+  column-gap: var(--space-4);
+}
+.gallery-grid li {
+  break-inside: avoid;
+  margin-block-end: var(--space-4);
+}
+.gallery-grid a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+}
+.gallery-grid img {
+  inline-size: 100%;
+  filter: grayscale(1);
+  transition:
+    filter 0.5s var(--ease),
+    scale 0.5s var(--ease);
+}
+
+@media (hover: hover) {
+  .gallery-grid a:hover img {
+    filter: grayscale(0);
+    scale: 1.04;
+  }
+}
+
+/* ---------- 6. Diferenciais ---------- */
+.features {
+  background: var(--color-surface);
+}
+
+.feature-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+.feature {
+  padding: var(--space-6);
+  border: 1px solid var(--color-line);
+  border-block-start: 2px solid var(--color-gold);
+  background: var(--color-bg);
+}
+.feature-icon {
+  margin-block-end: var(--space-4);
+  color: var(--color-gold);
+}
+.feature h3 {
+  margin-block-end: var(--space-2);
+  color: var(--color-white);
+}
+.feature p {
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+
+/* ---------- 7. Localização e horário ---------- */
+.location-grid {
+  display: grid;
+  gap: var(--space-7);
+}
+.location-info {
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+  justify-items: start;
+}
+
+.location-info address,
+.hours h3 {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.location-info address {
+  font-size: var(--step-1);
+}
+.info-icon {
+  flex: none;
+  margin-block-start: 0.15em;
+  color: var(--color-gold);
+}
+
+.hours {
+  inline-size: 100%;
+}
+.hours h3 {
+  margin-block-end: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.hours table {
+  max-inline-size: 26rem;
+}
+.hours th,
+.hours td {
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--color-line);
+  text-align: start;
+}
+.hours th {
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+.hours td {
+  text-align: end;
+  font-weight: 500;
+}
+
+.map {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.map iframe {
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 20rem;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  filter: grayscale(1) invert(0.9) contrast(0.95);
+}
+
+/* ---------- 8. Rodapé ---------- */
+.site-footer {
+  padding-block-start: var(--space-8);
+  border-block-start: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.footer-grid {
+  display: grid;
+  gap: var(--space-7);
+}
+.footer-brand p:last-child {
+  margin-block-start: var(--space-4);
+  color: var(--color-text-muted);
+}
+.footer-title {
+  margin-block-end: var(--space-4);
+  font-size: var(--step-1);
+}
+
+.footer-contact ul {
+  display: grid;
+  gap: var(--space-3);
+}
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+}
+.footer-contact svg {
+  flex: none;
+  fill: currentColor;
+  margin-block-start: 0.2em;
+  color: var(--color-gold);
+}
+.footer-contact a {
+  color: var(--color-text);
+}
+.footer-contact a:hover {
+  color: var(--color-gold-light);
+}
+
+.footer-social ul {
+  display: flex;
+  gap: var(--space-3);
+}
+.footer-social a {
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  color: var(--color-text);
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+.footer-social a:hover {
+  border-color: var(--color-gold);
+  background: var(--color-gold);
+  color: var(--color-bg);
+}
+.footer-social svg {
+  fill: currentColor;
+}
+
+.footer-bottom {
+  margin-block-start: var(--space-7);
+  padding-block: var(--space-5) 5.5rem; /* espaço para o botão flutuante no mobile */
+  border-block-start: 1px solid var(--color-line);
+  font-size: var(--step--1);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Responsivo (mobile-first)
+   ========================================================================== */
+
+/* >= 640px */
+@media (min-width: 40rem) {
+  .gallery-grid {
+    columns: 3;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: "info price action";
+  }
+  .service .btn {
+    justify-self: end;
+    min-inline-size: 7.5rem;
+  }
+}
+
+/* >= 1024px */
+@media (min-width: 64rem) {
+  .about-grid {
+    grid-template-columns: 5fr 6fr;
+    gap: var(--space-9);
+  }
+  .about-figure::after {
+    inset: 1rem -1rem -1rem 1rem;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .location-grid {
+    grid-template-columns: 4fr 6fr;
+    align-items: stretch;
+  }
+
+  .footer-grid {
+    grid-template-columns: 2fr 1.5fr 1fr;
+  }
+  .footer-bottom {
+    padding-block-end: var(--space-5);
+  }
+}
