@@ -11,7 +11,7 @@
     whatsapp: {
       number: "5585900000000", // formato: país + DDD + número (fictício)
       messages: {
-        agendar: "Olá! Gostaria de agendar um horário na Barbearia do Geovane.",
+        agendar: "Olá! Gostaria de agendar um horário na Barbearia Nobre.",
         "corte-simples": "Olá! Gostaria de agendar um corte simples (R$ 20).",
         "corte-degrade": "Olá! Gostaria de agendar um corte degradê (R$ 25).",
         barba: "Olá! Gostaria de agendar um corte com barba (+ R$ 5).",
